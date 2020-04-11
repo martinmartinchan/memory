@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Board from './Board';
 import GameSettings from './GameSettings';
+import GameStatus from './GameStatus';
 
 class Game extends Component {
 	constructor(props) {
@@ -22,7 +23,10 @@ class Game extends Component {
 		if (this.state.initializing) {
 			return <GameSettings whenDone={settings => this.gameStart(settings)}/>
 		} else {
-			return <Board settings={this.state.settings}/>
+			return <div>
+				<GameStatus />
+				<Board settings={this.state.settings}/>
+			</div>
 		}
 	}
 }

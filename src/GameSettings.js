@@ -5,14 +5,14 @@ class GameSettings extends Component {
 		super(props);
 		this.state = {
 			settings: {
-				rows: 1,
-				columns: 1,
 			}
 		}
 	}
 
 	render() {
-		return <button onClick={() => this.props.whenDone(this.state.settings)}>Click on me</button>
+		return <div className="container d-flex align-items-center justify-content-center vh-100">
+				<button className="btn btn-primary" onClick={() => this.props.whenDone(this.state.settings)}>Start game</button>
+		</div>
 	}
 }
 
