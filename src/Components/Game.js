@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Board from './Board';
 import GameSettings from './GameSettings';
 import GameStatus from './GameStatus';
-import {getMemoryImages, shuffle} from './../services/helper';
+import {getMemoryImages, shuffle, preload} from './../services/helper';
 
 class Game extends Component {
 	constructor(props) {
@@ -17,6 +17,8 @@ class Game extends Component {
 	gameStart(settings) {
 		// Get 8 random images
 		let imagesURL = getMemoryImages(8);
+		// Preloads the images so that the games feels smoother
+		preload(imagesURL);
 		// Repeat the 8 random images
 		imagesURL = imagesURL.concat(imagesURL);
 		// Shuffle the image array

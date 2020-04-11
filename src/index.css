@@ -4,6 +4,18 @@
 	height: 10vw;
 }
 
-.memory-image {
+.memory-card:hover {
+	cursor: pointer;
+}
+
+.memory-card-back {
+	background-color: skyblue;
+}
+
+.front-image {
 	width: 100%;
+}
+
+.back-image {
+	width: 75%;
 }

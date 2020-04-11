@@ -32,3 +32,11 @@ export function shuffle(list) {
 	}
 	return list;
 }
+
+// Preloads the images from an array of urls
+export function preload(list) {
+	list.forEach((url) => {
+		const img = new Image();
+		img.src = url;
+	})
+}
