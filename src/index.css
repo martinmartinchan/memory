@@ -1,6 +1,9 @@
 .memory-card {
-	background-color: silver;
 	margin: 0.5vw;
 	width: 10vw;
 	height: 10vw;
+}
+
+.memory-image {
+	width: 100%;
 }
