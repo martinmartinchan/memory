@@ -1,7 +1,13 @@
+/** Cards sizing is crucial to show the whole board one one screen. 
+		Cards are as wide as possible (20% of the view width) but cannot
+		have too big of height. The hight limit is for wide screens.
+*/
 .memory-card {
 	margin: 0.5vw;
-	width: 10vw;
-	height: 10vw;
+	width: 20vw;
+	height: 20vw;
+	max-width: 18vh;
+	max-height: 18vh;
 }
 
 .memory-card:hover {
