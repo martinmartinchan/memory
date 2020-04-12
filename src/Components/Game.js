@@ -8,8 +8,6 @@ class Game extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			// Settings for the game
-			settings: null,
 			// Wether game should render the Board or the settings page
 			initializing: true,
 			// Contains the urls for the images
@@ -18,8 +16,16 @@ class Game extends Component {
 			permanentlyFlipped: Array(16).fill(false),
 			// Keeps track of which cards that are flipped temporarily (only 2 maximum)
 			temporaryFlipped: [],
+			// Timeout time for the flip back when incorrect cards are guessed
+			timeoutTime: null,
 			// Blocks everything from being clicked
 			blockAll: false,
+			// Player points
+			playerPoints: [0, 0],
+			// Player Names in string
+			playerNames: [null, null],
+			// Current Player
+			currentPlayer: 0,
 		}
 	}
 
@@ -35,9 +41,10 @@ class Game extends Component {
 		imagesURL = shuffle(imagesURL);
 
 		this.setState({
-			settings: settings,
+			timeoutTime: settings.timeoutTime,
 			initializing: false,
 			images: imagesURL,
+			playerNames: [settings.playerName1, settings.playerName2],
 		});
 	}
 
@@ -56,7 +63,7 @@ class Game extends Component {
 				this.flipBack();
 			} else {
 				// Wrong cards have been flipped. Set temporary flipped for both and wait some time before flipping back
-				setTimeout(() => this.flipBack(), this.state.settings.timeoutTime);
+				setTimeout(() => this.flipBack(), this.state.timeoutTime);
 				// While we are in timeout, set both cards to show and block all clicks
 				const tempArr = this.state.temporaryFlipped.slice();
 				tempArr.push(i);
@@ -92,14 +99,18 @@ class Game extends Component {
 				whenDone = {settings => this.gameStart(settings)}/>
 		} else {
 			return <div>
-				<GameStatus />
+				<GameStatus 
+					currentPlayer = {this.state.currentPlayer}
+					playerNames = {this.state.playerNames}
+					playerPoints = {this.state.playerPoints}
+				/>
 				<Board 
-					settings = {this.state.settings} 
 					images = {this.state.images}
 					reportClicked = {i =>this.setTemporaryFlipped(i)}
 					permanentlyFlipped = {this.state.permanentlyFlipped}
 					temporaryFlipped = {this.state.temporaryFlipped}
-					blockAll = {this.state.blockAll} />
+					blockAll = {this.state.blockAll} 
+				/>
 			</div>
 		}
 	}

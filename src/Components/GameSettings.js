@@ -7,6 +7,9 @@ class GameSettings extends Component {
 			settings: {
 				// How long the game timeouts when flipping back cards
 				timeoutTime: 1000,
+				// Name of the players
+				playerName1: 'Player 1',
+				playerName2: 'Player 2',
 			}
 		}
 	}
