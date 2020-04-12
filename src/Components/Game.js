@@ -26,6 +26,8 @@ class Game extends Component {
 			playerNames: [null, null],
 			// Current Player
 			currentPlayer: 0,
+			// Keeps track of whether the game is finished
+			finished: false,
 		}
 	}
 
@@ -59,17 +61,27 @@ class Game extends Component {
 		} else {
 			// Else check if the urls match, i.e, is the same image
 			if (this.state.images[this.state.temporaryFlipped[0]] === this.state.images[i]) {
+				// Set the matched cards to permanently flipped
 				this.setPermanentlyFlipped(this.state.temporaryFlipped[0], i);
 				this.flipBack();
+				// Give points to current player
+				const tempPoints = this.state.playerPoints.slice();
+				tempPoints[this.state.currentPlayer] = tempPoints[this.state.currentPlayer] + 1;
+				this.setState({
+					playerPoints: tempPoints,
+				});
 			} else {
 				// Wrong cards have been flipped. Set temporary flipped for both and wait some time before flipping back
 				setTimeout(() => this.flipBack(), this.state.timeoutTime);
 				// While we are in timeout, set both cards to show and block all clicks
 				const tempArr = this.state.temporaryFlipped.slice();
 				tempArr.push(i);
+				// Switch the current player
+				const newCurrentPlayer = this.state.currentPlayer ? 0 : 1;
 				this.setState({
 					temporaryFlipped: tempArr,
 					blockAll: true,
+					currentPlayer: newCurrentPlayer,
 				})
 			}
 		}
@@ -83,6 +95,12 @@ class Game extends Component {
 		this.setState({
 			permanentlyFlipped: tempArr,
 		});
+		// Check if all cards have been flipped. Then we have a winner (or a draw)
+		if (tempArr.every((flipped) => {return flipped})) {
+			this.setState({
+				finished: true,
+			})
+		}
 	}
 
 	// Flip back the two cards as they were no match
@@ -103,6 +121,7 @@ class Game extends Component {
 					currentPlayer = {this.state.currentPlayer}
 					playerNames = {this.state.playerNames}
 					playerPoints = {this.state.playerPoints}
+					finished = {this.state.finished}
 				/>
 				<Board 
 					images = {this.state.images}
