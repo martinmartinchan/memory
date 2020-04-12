@@ -19,7 +19,7 @@ class GameStatus extends Component {
 			
 		}
 		return <div className="container d-flex justify-content-center">
-			<div className="card text-center mt-3 mb-1">
+			<div className="card status-card text-center mt-3 mb-1">
 				<div className="card-body">
 					{title}
 					<h5 className="card-title">Points</h5>

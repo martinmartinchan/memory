@@ -1,3 +1,20 @@
+/** Css for the settings card in the first page
+*/
+.settings-card {
+	width: 50vw;
+	min-width: 300px;
+}
+
+.settings-nav:hover {
+	cursor: pointer;
+}
+
+/** Css for the status 
+*/
+.status-card {
+	width: 75%;
+}
+
 /** Cards sizing is crucial to show the whole board one one screen. 
 		Cards are as wide as possible (20% of the view width) but cannot
 		have too big of height. The hight limit is for wide screens.

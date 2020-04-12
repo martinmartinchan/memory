@@ -72,17 +72,21 @@ class Game extends Component {
 				});
 			} else {
 				// Wrong cards have been flipped. Set temporary flipped for both and wait some time before flipping back
-				setTimeout(() => this.flipBack(), this.state.timeoutTime);
+				setTimeout(() => {
+					// Switch the current player
+					const newCurrentPlayer = this.state.currentPlayer ? 0 : 1;
+					this.setState({
+						currentPlayer: newCurrentPlayer,
+					})
+					this.flipBack();
+					}, this.state.timeoutTime);
 				// While we are in timeout, set both cards to show and block all clicks
 				const tempArr = this.state.temporaryFlipped.slice();
 				tempArr.push(i);
-				// Switch the current player
-				const newCurrentPlayer = this.state.currentPlayer ? 0 : 1;
 				this.setState({
 					temporaryFlipped: tempArr,
 					blockAll: true,
-					currentPlayer: newCurrentPlayer,
-				})
+				});
 			}
 		}
 	}
@@ -114,7 +118,7 @@ class Game extends Component {
 	render() {
 		if (this.state.initializing) {
 			return <GameSettings 
-				whenDone = {settings => this.gameStart(settings)}/>
+				submitSettings = {settings => this.gameStart(settings)}/>
 		} else {
 			return <div>
 				<GameStatus 
