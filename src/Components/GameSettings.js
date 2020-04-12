@@ -5,6 +5,8 @@ class GameSettings extends Component {
 		super(props);
 		this.state = {
 			settings: {
+				// How long the game timeouts when flipping back cards
+				timeoutTime: 1000,
 			}
 		}
 	}

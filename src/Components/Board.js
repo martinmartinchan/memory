@@ -8,7 +8,8 @@ class Board extends Component {
 			id = {i}
 			onClick = {(j) => this.handleClick(j)} 
 			imageURL = {this.props.images[i]}
-			flipped = {this.props.permanentlyFlipped[i] || (i === this.props.temporaryFlipped)}/>
+			flipped = {this.props.permanentlyFlipped[i] || (i === this.props.temporaryFlipped[0]) || (i === this.props.temporaryFlipped[1])}
+			blocked = {this.props.blockAll} />
 	}
 
 	createGrid() {

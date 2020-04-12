@@ -17,7 +17,7 @@ class Game extends Component {
 			// Keeps track of which cards are flipped permanently
 			permanentlyFlipped: Array(16).fill(false),
 			// Keeps track of which cards that are flipped temporarily (only 2 maximum)
-			temporaryFlipped: null,
+			temporaryFlipped: [],
 			// Blocks everything from being clicked
 			blockAll: false,
 		}
@@ -44,17 +44,27 @@ class Game extends Component {
 	// Set specific card to temporary flipped
 	setTemporaryFlipped(i) {
 		// Check whether another card is flipped
-		if (this.state.temporaryFlipped === null) {
+		if (this.state.temporaryFlipped.length === 0) {
 			// If this is the first of the pair that is flipped, set it to flipped
 			this.setState({
-				temporaryFlipped: i,
+				temporaryFlipped: [i],
 			})
 		} else {
 			// Else check if the urls match, i.e, is the same image
-			if (this.state.images[this.state.temporaryFlipped] === this.state.images[i]) {
-				this.setPermanentlyFlipped(this.state.temporaryFlipped, i);
+			if (this.state.images[this.state.temporaryFlipped[0]] === this.state.images[i]) {
+				this.setPermanentlyFlipped(this.state.temporaryFlipped[0], i);
+				this.flipBack();
+			} else {
+				// Wrong cards have been flipped. Set temporary flipped for both and wait some time before flipping back
+				setTimeout(() => this.flipBack(), this.state.settings.timeoutTime);
+				// While we are in timeout, set both cards to show and block all clicks
+				const tempArr = this.state.temporaryFlipped.slice();
+				tempArr.push(i);
+				this.setState({
+					temporaryFlipped: tempArr,
+					blockAll: true,
+				})
 			}
-			this.flipBack();
 		}
 	}
 
@@ -71,13 +81,12 @@ class Game extends Component {
 	// Flip back the two cards as they were no match
 	flipBack() {
 		this.setState({
-			temporaryFlipped: null,
+			blockAll: false,
+			temporaryFlipped: [],
 		})
 	}
 
 	render() {
-		console.log(this.state.permanentlyFlipped);
-		console.log(this.state.temporaryFlipped);
 		if (this.state.initializing) {
 			return <GameSettings 
 				whenDone = {settings => this.gameStart(settings)}/>
@@ -89,7 +98,8 @@ class Game extends Component {
 					images = {this.state.images}
 					reportClicked = {i =>this.setTemporaryFlipped(i)}
 					permanentlyFlipped = {this.state.permanentlyFlipped}
-					temporaryFlipped = {this.state.temporaryFlipped} />
+					temporaryFlipped = {this.state.temporaryFlipped}
+					blockAll = {this.state.blockAll} />
 			</div>
 		}
 	}

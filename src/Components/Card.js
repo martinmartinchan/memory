@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Card extends Component {
 	notifyClick(e) {
 		// Notify Board about the click if images is NOT flipped
-		if (!this.props.flipped) {
+		if (!this.props.flipped && !this.props.blocked) {
 			this.props.onClick(this.props.id);
 		}
 		e.preventDefault();
