@@ -1,3 +1,5 @@
+See the application live here: [Memory](https://martinmartinchan.github.io/memory/)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
