@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Board from './Board';
 import GameSettings from './GameSettings';
 import GameStatus from './GameStatus';
-import {getMemoryImages, shuffle, preload} from './../services/helper';
+import {getMemoryImages, shuffle, preload, stupidFlip, smartFlip, geniusFlip} from './../services/helper';
 
 class Game extends Component {
 	constructor(props) {
@@ -16,6 +16,8 @@ class Game extends Component {
 			permanentlyFlipped: Array(16).fill(false),
 			// Keeps track of which cards that are flipped temporarily (only 2 maximum)
 			temporaryFlipped: [],
+			// Keeps track of which cards that has ever been flipped, only for the bot
+			onceFlipped: Array(16).fill(false),
 			// Timeout time for the flip back when incorrect cards are guessed
 			timeoutTime: null,
 			// Blocks everything from being clicked
@@ -47,72 +49,117 @@ class Game extends Component {
 			initializing: false,
 			images: imagesURL,
 			playerNames: [settings.playerName1, settings.playerName2],
+			botActive: settings.botActive,
+			botIQ: settings.botIQ,
 		});
 	}
 
 	// Set specific card to temporary flipped
 	setTemporaryFlipped(i) {
+		// Prepare the once flipped array to be set later
+		const tempArrOnceFlipped = this.state.onceFlipped.slice();
+		tempArrOnceFlipped[i] = true;	
 		// Check whether another card is flipped
 		if (this.state.temporaryFlipped.length === 0) {
 			// If this is the first of the pair that is flipped, set it to flipped
+			// Also set the once flipped array
 			this.setState({
 				temporaryFlipped: [i],
-			})
+				onceFlipped: tempArrOnceFlipped,
+			}, 
+			// Then we call the botFlip
+			() => {
+				if (this.state.botActive && this.state.currentPlayer === 1) {
+					setTimeout(() => {
+						this.botFlip();
+					}, this.state.timeoutTime);
+				}
+			});
 		} else {
 			// Else check if the urls match, i.e, is the same image
 			if (this.state.images[this.state.temporaryFlipped[0]] === this.state.images[i]) {
 				// Set the matched cards to permanently flipped
-				this.setPermanentlyFlipped(this.state.temporaryFlipped[0], i);
-				this.flipBack();
+				const tempArrPermFlipped = this.state.permanentlyFlipped.slice();
+				tempArrPermFlipped[i] = true;
+				tempArrPermFlipped[this.state.temporaryFlipped[0]] = true;
 				// Give points to current player
 				const tempPoints = this.state.playerPoints.slice();
 				tempPoints[this.state.currentPlayer] = tempPoints[this.state.currentPlayer] + 1;
+				// Check if all cards have been flipped. Then we have a winner (or a draw)
+				const tempFinished = tempArrPermFlipped.every((flipped) => {return flipped})
+				// Also set the once flipped array
+				const tempBlockAll = this.state.currentPlayer && this.state.botActive;
 				this.setState({
+					permanentlyFlipped: tempArrPermFlipped,
 					playerPoints: tempPoints,
+					onceFlipped: tempArrOnceFlipped,
+					blockAll: tempBlockAll,
+					temporaryFlipped: [],
+					finished: tempFinished,
+				},
+				// Then we call the botFlip
+				() => {
+					if (this.state.botActive && this.state.currentPlayer === 1 && !this.state.finished) {
+						setTimeout(() => {
+							this.botFlip();
+						}, this.state.timeoutTime);
+					}
 				});
 			} else {
 				// Wrong cards have been flipped. Set temporary flipped for both and wait some time before flipping back
 				setTimeout(() => {
 					// Switch the current player
+					// Also set the once flipped array here
 					const newCurrentPlayer = this.state.currentPlayer ? 0 : 1;
+					// block All if new current player is bot
+					const tempBlockAll = newCurrentPlayer && this.state.botActive;
 					this.setState({
 						currentPlayer: newCurrentPlayer,
-					})
-					this.flipBack();
+						onceFlipped: tempArrOnceFlipped,
+						blockAll: tempBlockAll,
+						temporaryFlipped: [],
+					},
+					// Then we call the botFlip
+					() => {
+						if (this.state.botActive && this.state.currentPlayer === 1) {
+							setTimeout(() => {
+								this.botFlip();
+							}, this.state.timeoutTime);
+						}
+					});
 					}, this.state.timeoutTime);
 				// While we are in timeout, set both cards to show and block all clicks
-				const tempArr = this.state.temporaryFlipped.slice();
-				tempArr.push(i);
+				const tempArrTempFlipped = this.state.temporaryFlipped.slice();
+				tempArrTempFlipped.push(i);
 				this.setState({
-					temporaryFlipped: tempArr,
+					temporaryFlipped: tempArrTempFlipped,
 					blockAll: true,
 				});
 			}
 		}
 	}
 
-	// Set cards to permantently flipped
-	setPermanentlyFlipped(i, j) {
-		const tempArr = this.state.permanentlyFlipped.slice();
-		tempArr[i] = true;
-		tempArr[j] = true;
-		this.setState({
-			permanentlyFlipped: tempArr,
-		});
-		// Check if all cards have been flipped. Then we have a winner (or a draw)
-		if (tempArr.every((flipped) => {return flipped})) {
-			this.setState({
-				finished: true,
-			})
+	// Function for the bot flip
+	botFlip() {
+		if (this.state.botIQ === 'stupid') {
+			// Stupid Bot
+			// The Stupid Bot flips a card that is not permanently flipped randomly
+			const cardToFlip = stupidFlip(this.state.temporaryFlipped, this.state.permanentlyFlipped);
+			this.setTemporaryFlipped(cardToFlip);
+		} else if (this.state.botIQ === 'smart') {
+			// Smart Bot
+			// The Smart Bot flips cards that have been revealed before to match them
+			// Else it flips a new card to get information
+			// It remembers all cards that have ever been flipped
+			const cardToFlip = smartFlip(this.state.temporaryFlipped, this.state.permanentlyFlipped, this.state.onceFlipped, this.state.images);
+			this.setTemporaryFlipped(cardToFlip);
+		} else if (this.state.botIQ === 'genius') {
+			// Genius Bot
+			// The genius bot knows all cards even though they never been flipped.
+			// If human is not incredibly lucky, the genius bot will always win.
+			const cardToFlip = geniusFlip(this.state.temporaryFlipped, this.state.permanentlyFlipped, this.state.images);
+			this.setTemporaryFlipped(cardToFlip);
 		}
-	}
-
-	// Flip back the two cards as they were no match
-	flipBack() {
-		this.setState({
-			blockAll: false,
-			temporaryFlipped: [],
-		})
 	}
 
 	render() {

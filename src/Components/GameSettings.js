@@ -27,9 +27,9 @@ function Settingsform (props) {
 		playerInputs.push(<div key="bot" className="col-6">
 				<label htmlFor="bot">Bot</label>
 				<select id="bot" className="custom-select" required>
-      		<option value="stupid">stupid</option>
-      		<option value="smart">smart</option>
-      		<option value="genius">genius</option>
+      		<option value="stupid">Stupid</option>
+      		<option value="smart">Smart</option>
+      		<option value="genius">Genius</option>
     		</select>
 			</div>);
 	} else {
@@ -109,13 +109,13 @@ class GameSettings extends Component {
 		}
 		// Set the difficulty, this is actually only the timeout time
 		if (document.getElementById('diff-easy').checked) {
-			timeoutTime = 1500;
+			timeoutTime = 2000;
 		}
 		if (document.getElementById('diff-medium').checked) {
-			timeoutTime = 1000;
+			timeoutTime = 750;
 		}
 		if (document.getElementById('diff-hard').checked) {
-			timeoutTime = 500;
+			timeoutTime = 250;
 		}
 		// Create the settings object
 		let settings = {
@@ -125,7 +125,8 @@ class GameSettings extends Component {
 			botActive: this.state.botActive,
 			botIQ: botIQ,
 		};
-		console.log(settings);
+
+		// Transfer the settings to Game
 		this.props.submitSettings(settings);
 	}
 
