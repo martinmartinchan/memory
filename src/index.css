@@ -1,9 +1,15 @@
 /** Css for the settings card in the first page
 */
 .settings-card {
-	width: 50vw;
-	min-width: 300px;
+	width: 80vw;
 	box-shadow: 0 0 10px rgb(180, 180, 180);
+}
+
+@media screen and (min-width: 1000px) {
+	.settings-card {
+		width: 50vw;
+	}
+	
 }
 
 .settings-nav:hover {

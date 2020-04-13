@@ -45,7 +45,7 @@ function Settingsform (props) {
 
 	// Difficulty options
 	const difficulty = <div className="d-flex justify-content-center flex-nowrap mt-3">
-		<legend className="col-form-label col-2">Difficulty:</legend>
+		<legend className="col-form-label col-3">Difficulty:</legend>
 			<div className="form-check form-check-inline">
 				<input className="form-check-input" type="radio" name="difficulty" id="diff-easy" value="easy" defaultChecked="checked" />
 				<label className="form-check-label" htmlFor="diff-easy">Easy</label>
@@ -131,7 +131,7 @@ class GameSettings extends Component {
 	}
 
 	render() {
-		return <div className="container d-flex align-items-center justify-content-center vh-100">
+		return <div className="d-flex align-items-center justify-content-center vh-100">
 			<div className="card settings-card">
 				<Navbar 
 					botActive = {this.state.botActive}
