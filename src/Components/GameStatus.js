@@ -24,8 +24,15 @@ class GameStatus extends Component {
 					{title}
 					<h5 className="card-title">Points</h5>
 					<div className="row">
-						<div className="col-6">{`${this.props.playerNames[0]}: ${this.props.playerPoints[0]}`}</div>
-						<div className="col-6">{`${this.props.playerNames[1]}: ${this.props.playerPoints[1]}`}</div>
+						<div className="col-4">{`${this.props.playerNames[0]}: ${this.props.playerPoints[0]}`}</div>
+						<div className="col-4">{`${this.props.playerNames[1]}: ${this.props.playerPoints[1]}`}</div>
+						<div className="col-4">
+							<button className="btn btn-primary" onClick={() => {
+								if (window.confirm("Are you sure you want to restart the game?")) {
+									window.location.reload();
+								}
+							}}>Restart Game</button>
+						</div>
 					</div>
   			</div>
 			</div>
