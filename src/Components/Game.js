@@ -20,6 +20,8 @@ class Game extends Component {
 			onceFlipped: Array(16).fill(false),
 			// Timeout time for the flip back when incorrect cards are guessed
 			timeoutTime: null,
+			// How long time the bot waits between card flips
+			botWaitTime: 500,
 			// Blocks everything from being clicked
 			blockAll: false,
 			// Player points
@@ -50,7 +52,7 @@ class Game extends Component {
 			images: imagesURL,
 			playerNames: [settings.playerName1, settings.playerName2],
 			botActive: settings.botActive,
-			botIQ: settings.botIQ,
+			botDifficulty: settings.botDifficulty,
 		});
 	}
 
@@ -72,7 +74,7 @@ class Game extends Component {
 				if (this.state.botActive && this.state.currentPlayer === 1) {
 					setTimeout(() => {
 						this.botFlip();
-					}, this.state.timeoutTime);
+					}, this.state.botWaitTime);
 				}
 			});
 		} else {
@@ -102,7 +104,7 @@ class Game extends Component {
 					if (this.state.botActive && this.state.currentPlayer === 1 && !this.state.finished) {
 						setTimeout(() => {
 							this.botFlip();
-						}, this.state.timeoutTime);
+						}, this.state.botWaitTime);
 					}
 				});
 			} else {
@@ -124,7 +126,7 @@ class Game extends Component {
 						if (this.state.botActive && this.state.currentPlayer === 1) {
 							setTimeout(() => {
 								this.botFlip();
-							}, this.state.timeoutTime);
+							}, this.state.botWaitTime);
 						}
 					});
 					}, this.state.timeoutTime);
@@ -141,19 +143,19 @@ class Game extends Component {
 
 	// Function for the bot flip
 	botFlip() {
-		if (this.state.botIQ === 'stupid') {
+		if (this.state.botDifficulty === 'easy') {
 			// Stupid Bot
 			// The Stupid Bot flips a card that is not permanently flipped randomly
 			const cardToFlip = stupidFlip(this.state.temporaryFlipped, this.state.permanentlyFlipped);
 			this.setTemporaryFlipped(cardToFlip);
-		} else if (this.state.botIQ === 'smart') {
+		} else if (this.state.botDifficulty === 'medium') {
 			// Smart Bot
 			// The Smart Bot flips cards that have been revealed before to match them
 			// Else it flips a new card to get information
 			// It remembers all cards that have ever been flipped
 			const cardToFlip = smartFlip(this.state.temporaryFlipped, this.state.permanentlyFlipped, this.state.onceFlipped, this.state.images);
 			this.setTemporaryFlipped(cardToFlip);
-		} else if (this.state.botIQ === 'genius') {
+		} else if (this.state.botDifficulty === 'hard') {
 			// Genius Bot
 			// The genius bot knows all cards even though they never been flipped.
 			// If human is not incredibly lucky, the genius bot will always win.

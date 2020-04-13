@@ -27,9 +27,9 @@ function Settingsform (props) {
 		playerInputs.push(<div key="bot" className="col-6">
 				<label htmlFor="bot">Bot</label>
 				<select id="bot" className="custom-select" required>
-      		<option value="stupid">Stupid</option>
-      		<option value="smart">Smart</option>
-      		<option value="genius">Genius</option>
+      		<option value="easy">Easy</option>
+      		<option value="medium">Medium</option>
+      		<option value="hard">Hard</option>
     		</select>
 			</div>);
 	} else {
@@ -45,18 +45,18 @@ function Settingsform (props) {
 
 	// Difficulty options
 	const difficulty = <div className="d-flex justify-content-center flex-nowrap mt-3">
-		<legend className="col-form-label col-3">Difficulty:</legend>
+		<legend className="col-form-label col-3">Game Pace:</legend>
 			<div className="form-check form-check-inline">
-				<input className="form-check-input" type="radio" name="difficulty" id="diff-easy" value="easy" defaultChecked="checked" />
-				<label className="form-check-label" htmlFor="diff-easy">Easy</label>
+				<input className="form-check-input" type="radio" name="speed" id="speed-slow" value="slow" defaultChecked="checked" />
+				<label className="form-check-label" htmlFor="speed-slow">Slow</label>
 			</div>
 			<div className="form-check form-check-inline">
-				<input className="form-check-input" type="radio" name="difficulty" id="diff-medium" value="medium" />
-				<label className="form-check-label" htmlFor="diff-medium">Medium</label>
+				<input className="form-check-input" type="radio" name="speed" id="speed-moderate" value="moderate" />
+				<label className="form-check-label" htmlFor="speed-moderate">Moderate</label>
 			</div>
 			<div className="form-check form-check-inline">
-				<input className="form-check-input" type="radio" name="difficulty" id="diff-hard" value="hard" />
-				<label className="form-check-label" htmlFor="diff-hard">Hard</label>
+				<input className="form-check-input" type="radio" name="speed" id="speed-fast" value="fast" />
+				<label className="form-check-label" htmlFor="speed-fast">Fast</label>
 			</div>
 		</div>
 
@@ -94,27 +94,27 @@ class GameSettings extends Component {
 		let playerName1;
 		let playerName2;
 		let timeoutTime;
-		let botIQ = 'stupid';
+		let botDifficulty = 'easy';
 		// Player settings
 		if (this.state.botActive) {
 			// Set player name 1 to value of input or player if it is empty
 			playerName1 = document.getElementById('player').value ? document.getElementById('player').value : 'Player';
 			playerName2 = 'Bot';
 			// Set how smart the bot is
-			botIQ = document.getElementById('bot').value
+			botDifficulty = document.getElementById('bot').value
 		} else {
 			// Set player name 1 to value of input or player 1 if it is empty
 			playerName1 = document.getElementById('player1').value ? document.getElementById('player1').value : 'Player 1';
 			playerName2 = document.getElementById('player2').value ? document.getElementById('player2').value : 'Player 2';
 		}
 		// Set the difficulty, this is actually only the timeout time
-		if (document.getElementById('diff-easy').checked) {
+		if (document.getElementById('speed-slow').checked) {
 			timeoutTime = 2000;
 		}
-		if (document.getElementById('diff-medium').checked) {
+		if (document.getElementById('speed-moderate').checked) {
 			timeoutTime = 750;
 		}
-		if (document.getElementById('diff-hard').checked) {
+		if (document.getElementById('speed-fast').checked) {
 			timeoutTime = 250;
 		}
 		// Create the settings object
@@ -123,7 +123,7 @@ class GameSettings extends Component {
 			playerName1: playerName1,
 			playerName2: playerName2,
 			botActive: this.state.botActive,
-			botIQ: botIQ,
+			botDifficulty: botDifficulty,
 		};
 
 		// Transfer the settings to Game

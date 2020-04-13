@@ -69,7 +69,6 @@ export function stupidFlip(temporaryFlipped, permanentlyFlipped) {
 // If that image has never been flipped before, flip a card that is has never been flipped before
 // If there is no temporary flipped card, try to find if there is a matching pair in once flipped
 export function smartFlip(temporaryFlipped, permanentlyFlipped, onceFlipped, images) {
-	console.log(onceFlipped);
 	// Get the possible flips
 	const possibleFlips = getPossibleFlips(temporaryFlipped, permanentlyFlipped);
 	if (temporaryFlipped.length === 1) {
