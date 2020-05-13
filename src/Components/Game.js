@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Board from './Board';
 import GameSettings from './GameSettings';
 import GameStatus from './GameStatus';
