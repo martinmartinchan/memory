@@ -22,7 +22,7 @@ function Settingsform (props) {
 	if (props.botActive) {
 		playerInputs.push(<div key="player" className="col-6">
 				<label htmlFor="player">Player</label>
-    		<input type="text" id="player" className="form-control" />
+    		<input type="text" id="player" className="form-control" placeHolder="Name of player"/>
 			</div>);
 		playerInputs.push(<div key="bot" className="col-6">
 				<label htmlFor="bot">Bot</label>
@@ -35,11 +35,11 @@ function Settingsform (props) {
 	} else {
 		playerInputs.push(<div key="player1" className="col-6">
 				<label htmlFor="player1">Player 1</label>
-    		<input type="text" id="player1" className="form-control" />
+    		<input type="text" id="player1" className="form-control" placeHolder="Name of player 1"/>
 			</div>);
 		playerInputs.push(<div key="player2" className="col-6">
 				<label htmlFor="player2">Player 2</label>
-				<input type="text" id="player2" className="form-control" />
+				<input type="text" id="player2" className="form-control" placeHolder="Name of player 2"/>
 			</div>);
 	}
 
@@ -47,15 +47,15 @@ function Settingsform (props) {
 	const difficulty = <div className="d-flex justify-content-center flex-nowrap mt-3">
 		<legend className="col-form-label col-3">Game Pace:</legend>
 			<div className="form-check form-check-inline">
-				<input className="form-check-input" type="radio" name="speed" id="speed-slow" value="slow" defaultChecked="checked" />
+				<input className="form-check-input cursor-pointer" type="radio" name="speed" id="speed-slow" value="slow" defaultChecked="checked" />
 				<label className="form-check-label" htmlFor="speed-slow">Slow</label>
 			</div>
 			<div className="form-check form-check-inline">
-				<input className="form-check-input" type="radio" name="speed" id="speed-moderate" value="moderate" />
+				<input className="form-check-input cursor-pointer" type="radio" name="speed" id="speed-moderate" value="moderate" />
 				<label className="form-check-label" htmlFor="speed-moderate">Moderate</label>
 			</div>
 			<div className="form-check form-check-inline">
-				<input className="form-check-input" type="radio" name="speed" id="speed-fast" value="fast" />
+				<input className="form-check-input cursor-pointer" type="radio" name="speed" id="speed-fast" value="fast" />
 				<label className="form-check-label" htmlFor="speed-fast">Fast</label>
 			</div>
 		</div>

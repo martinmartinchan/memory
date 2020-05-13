@@ -8,7 +8,7 @@ class Game extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			// Wether game should render the Board or the settings page
+			// Whether game should render the Board or the settings page
 			initializing: true,
 			// Contains the urls for the images
 			images: [],
