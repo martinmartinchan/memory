@@ -22,11 +22,11 @@ function Settingsform (props) {
 	if (props.botActive) {
 		playerInputs.push(<div key="player" className="col-6">
 				<label htmlFor="player">Player</label>
-    		<input type="text" id="player" className="form-control" placeHolder="Name of player"/>
+    		<input type="text" id="player" className="form-control" placeholder="Name of player"/>
 			</div>);
 		playerInputs.push(<div key="bot" className="col-6">
 				<label htmlFor="bot">Bot</label>
-				<select id="bot" className="custom-select" required>
+				<select id="bot" className="custom-select cursor-pointer" required>
       		<option value="easy">Easy</option>
       		<option value="medium">Medium</option>
       		<option value="hard">Hard</option>
@@ -35,11 +35,11 @@ function Settingsform (props) {
 	} else {
 		playerInputs.push(<div key="player1" className="col-6">
 				<label htmlFor="player1">Player 1</label>
-    		<input type="text" id="player1" className="form-control" placeHolder="Name of player 1"/>
+    		<input type="text" id="player1" className="form-control" placeholder="Name of player 1"/>
 			</div>);
 		playerInputs.push(<div key="player2" className="col-6">
 				<label htmlFor="player2">Player 2</label>
-				<input type="text" id="player2" className="form-control" placeHolder="Name of player 2"/>
+				<input type="text" id="player2" className="form-control" placeholder="Name of player 2"/>
 			</div>);
 	}
 

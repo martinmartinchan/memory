@@ -1,5 +1,5 @@
 // Returns a list of url's containing the images that will be used within the memory game
-export function getMemoryImages(numberOfImages) {
+export function getMemoryImagesURL(numberOfImages) {
 	const pokemonURL = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/';
 	const maxNumber = 807; // This corresponds to Zeraora, the last pokemon in the PokeAPI
 
@@ -35,10 +35,13 @@ export function shuffle(list) {
 
 // Preloads the images from an array of urls
 export function preload(list) {
+	const images = [];
 	list.forEach((url) => {
 		const img = new Image();
 		img.src = url;
-	})
+		images.push(img);
+	});
+	return images;
 }
 
 // Helper function to get all possible flips considering what is permanentlyflipped and temporaryflipped
