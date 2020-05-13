@@ -19,7 +19,7 @@ class Card extends Component {
 		} else {
 			return (
 				<div onClick={e => this.notifyClick(e)} className="card memory-card memory-card-back d-flex justify-content-center align-items-center">
-					<img className="back-image" src='/pokeball.png' alt="pokeball"/>
+					<img className="back-image" src={process.env.PUBLIC_URL + '/pokeball.png'} alt="pokeball"/>
 				</div>
 			)
 		}
